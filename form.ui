@@ -34,8 +34,8 @@
       <rect>
        <x>10</x>
        <y>0</y>
-       <width>331</width>
-       <height>165</height>
+       <width>401</width>
+       <height>201</height>
       </rect>
      </property>
      <property name="firstDayOfWeek">
@@ -48,9 +48,9 @@
     <widget class="QScrollArea" name="invoice_scrollArea">
      <property name="geometry">
       <rect>
-       <x>350</x>
+       <x>470</x>
        <y>0</y>
-       <width>591</width>
+       <width>461</width>
        <height>281</height>
       </rect>
      </property>
@@ -62,7 +62,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>589</width>
+        <width>459</width>
         <height>279</height>
        </rect>
       </property>
@@ -72,9 +72,9 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>160</y>
+       <y>210</y>
        <width>341</width>
-       <height>271</height>
+       <height>221</height>
       </rect>
      </property>
      <property name="title">
@@ -126,9 +126,9 @@
      <widget class="QPushButton" name="add_contact_Button1">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>200</y>
-        <width>81</width>
+        <x>210</x>
+        <y>160</y>
+        <width>91</width>
         <height>21</height>
        </rect>
       </property>
@@ -139,9 +139,9 @@
      <widget class="QPushButton" name="genInvoice_Button">
       <property name="geometry">
        <rect>
-        <x>190</x>
-        <y>230</y>
-        <width>91</width>
+        <x>200</x>
+        <y>190</y>
+        <width>111</width>
         <height>21</height>
        </rect>
       </property>
@@ -152,10 +152,10 @@
      <widget class="QListView" name="contacts_listView">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>20</y>
-        <width>141</width>
-        <height>141</height>
+        <x>180</x>
+        <y>0</y>
+        <width>161</width>
+        <height>151</height>
        </rect>
       </property>
      </widget>
@@ -165,7 +165,7 @@
       <rect>
        <x>650</x>
        <y>300</y>
-       <width>291</width>
+       <width>281</width>
        <height>131</height>
       </rect>
      </property>

@@ -571,6 +571,16 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             log.critical(f"Contact {name} Deleted")
             return True
 
+    def DataBaseWarning_msg(self, msg):
+        self.msg_homePage.setIcon(QMessageBox.Warning)
+        self.msg_homePage.setText(msg)
+        self.msg_homePage.setStandardButtons(QMessageBox.Ok)
+        self.msg_homePage.setWindowTitle("Warning!")
+        returnValue = self.msg_homePage.exec_()
+        if returnValue == QMessageBox.Ok:
+            log.critical(msg)
+            return True
+
     def show_contact_dialog(self):
         ContactWindow(self).exec_()
 
@@ -585,7 +595,24 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.calendarRefresh()
 
     def generateInvoiceWindow(self):
-        GenerateInvoiceWindow(self).exec_()
+        try:
+            user = list(self.d.cur.execute("SELECT * FROM Config WHERE type LIKE 'user'"))
+            sub = list(self.d.cur.execute("SELECT * FROM Config WHERE type LIKE 'contractor'"))
+            log.success(f"Users:{len(user)}")
+            log.success(f"Contractors:{len(sub)}")
+            if len(user) and len(sub):  # both
+                GenerateInvoiceWindow(self).exec_()
+            elif len(user) and not len(sub):  # user only
+                msg = f"Database Missing Sub-Contractor Data"
+                self.DataBaseWarning_msg(msg)
+            elif not len(user) and len(sub):  # sub only
+                msg = f"Database Missing User Data"
+                self.DataBaseWarning_msg(msg)
+            else:  # neither
+                msg = f"Database Missing User & Sub-Contractor Data"
+                self.DataBaseWarning_msg(msg)
+        except Exception as e:
+            log.error(e)
 
     def setDate(self): # Todo Delete
         date = self.ui.calendarWidget.selectedDate()
