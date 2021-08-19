@@ -125,6 +125,7 @@ class AddSubWindow(QDialog):
         QDialog.setTabOrder(self.addSubUi.settingSubPostcode_lineEdit, self.addSubUi.settingSubEmail_lineEdit)
         QDialog.setTabOrder(self.addSubUi.settingSubEmail_lineEdit, self.addSubUi.settingSave_Button)
         QDialog.setTabOrder(self.addSubUi.settingSave_Button, self.addSubUi.cancelButton)
+        self.parent = parent
 
     def saveSubData(self):
         subData = ["sub contractor", self.addSubUi.settingSubName_lineEdit.text(),
@@ -135,6 +136,7 @@ class AddSubWindow(QDialog):
         self.d.cur.execute('''INSERT INTO Config (type,name,email,houseName,roadName,areaName,countyName,
                         postcode) VALUES (?,?,?,?,?,?,?,?)''', subData)
         self.d.con.commit()
+        self.parent.update_configModel()
         self.close()
 
 
@@ -597,18 +599,23 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def generateInvoiceWindow(self):
         try:
             user = list(self.d.cur.execute("SELECT * FROM Config WHERE type LIKE 'user'"))
-            sub = list(self.d.cur.execute("SELECT * FROM Config WHERE type LIKE 'contractor'"))
+            sub = list(self.d.cur.execute("SELECT * FROM Config WHERE type LIKE 'sub contractor'"))
             log.success(f"Users:{len(user)}")
             log.success(f"Contractors:{len(sub)}")
+            log.success("1")
             if len(user) and len(sub):  # both
+                log.success("2")
                 GenerateInvoiceWindow(self).exec_()
             elif len(user) and not len(sub):  # user only
+                log.success("3")
                 msg = f"Database Missing Sub-Contractor Data"
                 self.DataBaseWarning_msg(msg)
             elif not len(user) and len(sub):  # sub only
+                log.success("4")
                 msg = f"Database Missing User Data"
                 self.DataBaseWarning_msg(msg)
             else:  # neither
+                log.success("5")
                 msg = f"Database Missing User & Sub-Contractor Data"
                 self.DataBaseWarning_msg(msg)
         except Exception as e:

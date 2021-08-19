@@ -16,10 +16,10 @@
   <widget class="QPushButton" name="settingSave_Button">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>230</y>
-     <width>91</width>
-     <height>21</height>
+     <x>10</x>
+     <y>220</y>
+     <width>101</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -29,7 +29,7 @@
   <widget class="QLineEdit" name="settingUserName_lineEdit">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>90</x>
      <y>10</y>
      <width>113</width>
      <height>21</height>
@@ -41,8 +41,8 @@
     <rect>
      <x>30</x>
      <y>130</y>
-     <width>47</width>
-     <height>13</height>
+     <width>61</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
@@ -52,8 +52,8 @@
   <widget class="QLineEdit" name="settingUserEmail_lineEdit">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>200</y>
+     <x>90</x>
+     <y>190</y>
      <width>113</width>
      <height>21</height>
     </rect>
@@ -62,7 +62,7 @@
   <widget class="QLineEdit" name="settingUserCounty_lineEdit">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>90</x>
      <y>130</y>
      <width>113</width>
      <height>21</height>
@@ -72,7 +72,7 @@
   <widget class="QLineEdit" name="settingUserArea_lineEdit">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>90</x>
      <y>100</y>
      <width>113</width>
      <height>21</height>
@@ -82,7 +82,7 @@
   <widget class="QLineEdit" name="settingUserRoad_lineEdit">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>90</x>
      <y>70</y>
      <width>113</width>
      <height>21</height>
@@ -94,7 +94,7 @@
     <rect>
      <x>6</x>
      <y>70</y>
-     <width>71</width>
+     <width>81</width>
      <height>20</height>
     </rect>
    </property>
@@ -107,7 +107,7 @@
     <rect>
      <x>40</x>
      <y>100</y>
-     <width>41</width>
+     <width>51</width>
      <height>20</height>
     </rect>
    </property>
@@ -118,7 +118,7 @@
   <widget class="QLineEdit" name="settingUserHouse_lineEdit">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>90</x>
      <y>40</y>
      <width>113</width>
      <height>21</height>
@@ -133,18 +133,18 @@
     <rect>
      <x>10</x>
      <y>40</y>
-     <width>71</width>
+     <width>81</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>Your House:</string>
+    <string>Your House :</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="settingUserPostcode_lineEdit">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>90</x>
      <y>160</y>
      <width>113</width>
      <height>21</height>
@@ -154,27 +154,27 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>10</y>
-     <width>61</width>
+     <width>81</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Your Name:</string>
+    <string>Your Name :</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_20">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>200</y>
-     <width>51</width>
+     <x>10</x>
+     <y>190</y>
+     <width>71</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>Your Email:</string>
+    <string>Your Email :</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -182,7 +182,7 @@
     <rect>
      <x>20</x>
      <y>160</y>
-     <width>51</width>
+     <width>61</width>
      <height>21</height>
     </rect>
    </property>
@@ -194,9 +194,9 @@
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>230</y>
+     <y>220</y>
      <width>80</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
