@@ -217,12 +217,12 @@ class GenerateInvoiceWindow(QDialog):
         self.gen.cancelButton.clicked.connect(self.closeWindow)  # clear_selection
         self.gen.from_comboBox.addItems(self.userList())
         self.gen.billTo_comboBox.addItems(self.contractorList())
+        self.msg = QMessageBox()
 
         self.dropDownSize2()
         self.parent = parent
         qsql_db = self.parent.qsql_db
-        self.invoiceModel_days = QSqlTableModel(None, qsql_db)  # pretty sure its here - qsql_db -
-        # self.invoiceModel_days = QSqlTableModel(None, self.daysSelected) # thats what im trying to achieve
+        self.invoiceModel_days = QSqlTableModel(None, qsql_db)
         self.invoiceModel_days.setTable("Days")
         self.invoiceModel_days.setEditStrategy(QSqlTableModel.OnFieldChange)
         self.gen.genInvoice_tableView.resizeColumnsToContents()
@@ -245,9 +245,10 @@ class GenerateInvoiceWindow(QDialog):
         self.updateInvoiceTable()
         self.gen.generateButton.clicked.connect(self.createInvoice)
         # self.daysSelected(days=self.parent.ui.calendarWidget.selected_dates)
-        self.fillWorkSheet()
+        #self.fillWorkSheet()
+        # where it was to start with
 
-    def fillWorkSheet(self):
+    def fillWorkSheet(self, workbook, worksheet):
         userIdx = self.gen.from_comboBox.currentIndex()
         user = self.gen.from_comboBox.itemText(userIdx)
         userdata = list(self.d.cur.execute("SELECT * FROM Config WHERE name=?", [user]))
@@ -283,8 +284,8 @@ class GenerateInvoiceWindow(QDialog):
             'contractorEmail': j[2]
         }
         log.debug(f"Contractor: {contractorAddress}")
-        workbook = Workbook(f'{"test1"}.xlsx')
-        worksheet = workbook.add_worksheet()
+        #workbook = Workbook(f'{"test1"}.xlsx')
+        #worksheet = workbook.add_worksheet()
         # Username Cell
         usernameCellFormat = workbook.add_format({'bold': True, 'font_size': 11, 'align': 'bottom-left',
                                                   'font_name': 'Arial'})
@@ -295,9 +296,11 @@ class GenerateInvoiceWindow(QDialog):
         userAddressFormat = workbook.add_format({'align': 'bottom', 'font_name': 'Arial', 'font_size': 10})
         userEmailFormat = workbook.add_format({'align': 'bottom', 'font_name': 'Arial', 'bold': True, 'italic': True,
                                                'font_size': 11})
+        log.debug("Writing User Data to Spreadsheet")
         worksheet.write(1, 3, f"{userAddress.get('userHouse')}, {userAddress.get('userRoad')}", userAddressFormat)
         worksheet.write(2, 3, f"{userAddress.get('userArea')}, {userAddress.get('userPostcode')}", userAddressFormat)
         worksheet.write(3, 3, userAddress.get('userEmail'), userEmailFormat)
+        log.success("User Data Written")
 
         billToCellFormat = workbook.add_format({'bold': True, 'font_size': 11, 'align': 'bottom-left',
                                                 'font_name': 'Arial'})
@@ -323,29 +326,15 @@ class GenerateInvoiceWindow(QDialog):
         # Find the very next Friday after the last work day
         last_date = max(self.days)
         log.debug(f"Date Before: {last_date}")
-        #log.debug(f"Date After: {QDate.}")
+        # log.debug(f"Date After: {QDate.}")
         try:
-            while last_date.dayOfWeek() != 5:   # 5 - Friday
+            while last_date.dayOfWeek() != 5:  # 5 - Friday
                 last_date = last_date.addDays(1)
-            log.debug(f'FRIDAY AFTER: {last_date}') # 239
+            log.debug(f'FRIDAY AFTER: {last_date}')  # 239
         except Exception as e:
             log.exception(e)
-
-        """mostRecentDate = max(self.dates)
-        rd = QDate.fromString(mostRecentDate, Qt.ISODate).dayOfYear()
-        date = QDate.
-        log.debug(rd)
-        log.debug(f"Recent Date: {mostRecentDate}")
-        log.debug(f"Today: {today}")
-        friday = rd - today + 5
-        log.success(f"Next Friday: {friday}")
-        day = QDate.daysTo()"""
-
-
-        """for entry in userAddress:
-            worksheet.write(row, col + 1, userAddress[entry])
-            row += 1"""
-        workbook.close()
+        log.success("Closing Workbook")
+        #workbook.close()
 
     def createInvoice(self):
         workbook = Workbook(f'{"test1"}.xlsx')
@@ -355,15 +344,30 @@ class GenerateInvoiceWindow(QDialog):
         for row in range(model.rowCount()):
             for column in range(model.columnCount()):
                 index = model.index(row, column)
-                log.info(worksheet.write(row, column, model.data(index)))
-
+                #log.info(worksheet.write(row, column, model.data(index)))
+        self.fillWorkSheet(workbook, worksheet)
         workbook.close()
 
     def invoiceNumber(self):
         self.d.cur.execute("SELECT max(id) FROM Days")  # TODO change to invoice table
-        invoiceId = self.d.cur.fetchone()[0] + 1
-        self.gen.invoiceNo_lineEdit.setText(str(invoiceId))
-        log.success(invoiceId)
+        result = self.d.cur.fetchone()[0]
+        if result is not None:
+            log.success(f"Last Invoice No. :{result}")
+            invoiceId = result + 1
+            self.gen.invoiceNo_lineEdit.setText(str(invoiceId))
+            log.success(invoiceId)
+        else:
+            self.error_msg("No Stored Invoices")
+            self.gen.invoiceNo_lineEdit.setText("101")
+            log.debug("Default invoice id 101 set")
+
+    def error_msg(self, msg):
+        log.warning(msg)
+        self.msg.setIcon(QMessageBox.Critical)
+        self.msg.setText(msg)
+        self.msg.setStandardButtons(QMessageBox.Ok)
+        self.msg.setWindowTitle("Warning!")
+        self.msg.exec_()
 
     def weekNumber(self, date):
         a = QDate.fromString(date, Qt.ISODate).weekNumber()
@@ -469,7 +473,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # self.ui.dateEdit.setDate(QDate.currentDate()) Todo Delete
         self.ui.calendarWidget.setSelectedDate(QDate.currentDate())
         self.ui.calendarWidget.activated.connect(self.showWorkDayWindow)
-        #self.ui.calendarWidget.
+        # self.ui.calendarWidget.
         self.ui.genInvoice_Button.clicked.connect(self.generateInvoiceWindow)
 
         self.qsql_db = QSqlDatabase.addDatabase("QSQLITE")
@@ -621,7 +625,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         except Exception as e:
             log.error(e)
 
-    def setDate(self): # Todo Delete
+    def setDate(self):  # Todo Delete
         date = self.ui.calendarWidget.selectedDate()
         if date is not None:
             self.ui.dateEdit.setDate(date)
